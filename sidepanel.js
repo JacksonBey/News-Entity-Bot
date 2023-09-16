@@ -84,13 +84,16 @@ document.getElementById("summarize").addEventListener("click", () => {
     completion.style.display = "block"
     completion.innerHTML = response.html
 
+    console.log(response)
+
     renderResults(response)
   })
 })
 
 let kidMode = false
+let summaryLevelMode = "summary10y"
 
-const renderResults = async () => {
+const renderResults = (entities) => {
   let results = document.querySelector(".results")
 
   results.innerHTML = ""
@@ -107,10 +110,21 @@ const renderResults = async () => {
     let summaryEl = document.createElement("summary")
     summaryEl.className = "summary"
 
-    summaryEl.innerHTML = entity["summary-10y"]
-    if (!kidMode) {
-      summaryEl.innerHTML = entity["summary-adult"]
+    let summary = entity["summary"]
+    switch (summaryLevelMode) {
+      case 1:
+        // Adult
+        summary = entity["summary"]
+        break
+      case 2:
+        // Expert
+        summary = entity["summaryExpert"]
+        break
+      default:
+        // Kid
+        summary = entity["summary10y"]
     }
+    summaryEl.innerHTML = summary
 
     let textContent = document.createElement("summary")
     textContent.className = "text-content"
@@ -130,9 +144,22 @@ const renderResults = async () => {
   })
 }
 
-let toggle = document.getElementById("toggle")
-toggle.addEventListener("click", (event) => {
-  kidMode = !kidMode
+let slider = document.getElementById("slider")
+slider.addEventListener("change", (event) => {
+  let sliderVal = slider.value * 1
+  switch (sliderVal) {
+    case 1:
+      // Adult
+      summaryLevelMode = 1
+      break
+    case 2:
+      // Expert
+      summaryLevelMode = 2
+      break
+    default:
+      // Kid
+      summaryLevelMode = 0
+  }
   renderResults()
 })
 
