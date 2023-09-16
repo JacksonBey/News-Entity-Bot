@@ -1,19 +1,10 @@
 let entities = []
 
-// Function to simulate API call
-const dummyApiCall = () => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({ html: "<p>This is your summarized content.</p>" })
-    }, 2000) // Simulating 2 seconds API response time
-  })
-}
+// const sampleText =
+//  "AUSTIN, Texas (AP) — Republican Texas Attorney General Ken Paxton was fully acquitted Saturday of corruption charges following a historic impeachment trial, a resounding verdict that reaffirms the power of the GOP’s hard right and puts an indicted incumbent who remains under FBI investigation back into office.The outcome demonstrated Paxton’s enduring durability in America’s biggest red state after years of criminal charges and scandal. It also delivered a signature victory for the Texas GOP’s ascendent conservative wing following a dramatic trial that put on display the fractures among Republicans nationally heading into 2024.More than three months after an overwhelming impeachment in the Texas House, which is controlled by Republicans, Paxton was just as convincingly acquitted by Senate Republicans who serve alongside his wife, state Sen. Angela Paxton."
 
 // real API call
-const fetchData = async (text) => {
-  const sampleText =
-    "AUSTIN, Texas (AP) — Republican Texas Attorney General Ken Paxton was fully acquitted Saturday of corruption charges following a historic impeachment trial, a resounding verdict that reaffirms the power of the GOP’s hard right and puts an indicted incumbent who remains under FBI investigation back into office.The outcome demonstrated Paxton’s enduring durability in America’s biggest red state after years of criminal charges and scandal. It also delivered a signature victory for the Texas GOP’s ascendent conservative wing following a dramatic trial that put on display the fractures among Republicans nationally heading into 2024.More than three months after an overwhelming impeachment in the Texas House, which is controlled by Republicans, Paxton was just as convincingly acquitted by Senate Republicans who serve alongside his wife, state Sen. Angela Paxton."
-
+const fetchData = async (sampleText) => {
   const apiUrl =
     "https://api.fixie.ai/api/v1/agents/csdiehl/fixie-sidekick-template/conversations"
 
@@ -54,7 +45,18 @@ const fetchData = async (text) => {
   }
 }
 
-document.getElementById("summarize").addEventListener("click", () => {
+document.getElementById("summarize").addEventListener("click", function () {
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    const currentTab = tabs[0]
+    chrome.tabs.sendMessage(
+      currentTab.id,
+      { action: "getPageContent" },
+      fetchAIData
+    )
+  })
+})
+
+const fetchAIData = (pageContent) => {
   const loading = document.getElementById("loading")
   const progressBar = document.getElementById("progressBar")
   const completion = document.getElementById("completion")
@@ -80,7 +82,7 @@ document.getElementById("summarize").addEventListener("click", () => {
   }, 200) // Adjust the interval time if needed
 
   // Make the dummy API call
-  fetchData().then((response) => {
+  fetchData(pageContent).then((response) => {
     clearInterval(interval) // Clear the interval
     progressBar.value = 100
     // loading.style.display = "none"
@@ -100,56 +102,7 @@ document.getElementById("summarize").addEventListener("click", () => {
     //   p.innerHTML = `<strong>${entity.name},</strong>${entity.title}<br/>${entity.summary}`
     // }
   })
-})
-
-// Fake data
-let entitiesStatic2 = [
-  {
-    "name": "Ken Paxton",
-    "title": "Republican Texas Attorney General",
-    "summary-10y":
-      "Ken Paxton was in a big trial because some people said he did bad things, but he was not found guilty.",
-    "summary-adult":
-      "Republican Texas Attorney General Ken Paxton was acquitted of corruption charges after a historic impeachment trial but still faces other legal issues.",
-  },
-  {
-    "name": "Angela Paxton",
-    "title": "State Senator & Ken Paxton's Wife",
-    "summary-10y":
-      "Angela Paxton was at the trial supporting her husband and hugged his lawyers after the trial ended.",
-    "summary-adult":
-      "State Sen. Angela Paxton was present throughout the trial in support of her husband and celebrated his acquittal with his legal team.",
-  },
-  {
-    "name": "Greg Abbott",
-    "title": "Texas Governor",
-    "summary-10y":
-      "Governor Greg Abbott said he was happy that Ken Paxton could come back to his job.",
-    "summary-adult":
-      "Texas Gov. Greg Abbott swiftly welcomed Paxton back to his position following the acquittal.",
-  },
-  {
-    "name": "Dan Patrick",
-    "title": "Republican Lt. Governor of Texas",
-    "summary-10y":
-      "Dan Patrick was the boss of the trial and later said he didn't like how it started.",
-    "summary-adult":
-      "Republican Lt. Gov. Dan Patrick, who presided over the trial, criticized the impeachment process and suggested changes to the state constitution.",
-  },
-]
-
-let entitiesStatic = [
-  {
-    "summary10y":
-      "Angela Paxton, who is married to Ken Paxton, works…people who decided her husband did nothing wrong.",
-    "title": "State Senator",
-    "summaryExpert":
-      "The role of Angela Paxton in the Senate Republican…potential conflicts of interest within the party.",
-    "summary":
-      "Angela Paxton, a state senator and the wife of Ken…the Senate Republicans who acquitted her husband.",
-    "name": "Angela Paxton",
-  },
-]
+}
 
 let summaryLevelMode = 1
 
