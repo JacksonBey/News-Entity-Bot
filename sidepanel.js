@@ -1,3 +1,5 @@
+let entities = []
+
 // Function to simulate API call
 const dummyApiCall = () => {
   return new Promise((resolve, reject) => {
@@ -40,6 +42,7 @@ const fetchData = async (text) => {
       throw new Error(`HTTP error! Status: ${response.status}`)
     }
     const text = await response.text()
+
     const lastLine = text.split("\n").at(-2)
     const messages = JSON.parse(lastLine)
       .turns[1].messages.map((d) => d.args)
@@ -80,20 +83,77 @@ document.getElementById("summarize").addEventListener("click", () => {
   fetchData().then((response) => {
     clearInterval(interval) // Clear the interval
     progressBar.value = 100
-    loading.style.display = "none"
-    completion.style.display = "block"
-    completion.innerHTML = response.html
+    // loading.style.display = "none"
+    // completion.style.display = "block"
+    // completion.innerHTML = response.html
 
     console.log(response)
 
+    entities = response
+
     renderResults(response)
+
+    // for (let entity of response) {
+    //   console.log(entity)
+    //   let p = document.createElement("p")
+    //   document.getElementById("responses").appendChild(p)
+    //   p.innerHTML = `<strong>${entity.name},</strong>${entity.title}<br/>${entity.summary}`
+    // }
   })
 })
 
-let kidMode = false
-let summaryLevelMode = "summary10y"
+// Fake data
+let entitiesStatic2 = [
+  {
+    "name": "Ken Paxton",
+    "title": "Republican Texas Attorney General",
+    "summary-10y":
+      "Ken Paxton was in a big trial because some people said he did bad things, but he was not found guilty.",
+    "summary-adult":
+      "Republican Texas Attorney General Ken Paxton was acquitted of corruption charges after a historic impeachment trial but still faces other legal issues.",
+  },
+  {
+    "name": "Angela Paxton",
+    "title": "State Senator & Ken Paxton's Wife",
+    "summary-10y":
+      "Angela Paxton was at the trial supporting her husband and hugged his lawyers after the trial ended.",
+    "summary-adult":
+      "State Sen. Angela Paxton was present throughout the trial in support of her husband and celebrated his acquittal with his legal team.",
+  },
+  {
+    "name": "Greg Abbott",
+    "title": "Texas Governor",
+    "summary-10y":
+      "Governor Greg Abbott said he was happy that Ken Paxton could come back to his job.",
+    "summary-adult":
+      "Texas Gov. Greg Abbott swiftly welcomed Paxton back to his position following the acquittal.",
+  },
+  {
+    "name": "Dan Patrick",
+    "title": "Republican Lt. Governor of Texas",
+    "summary-10y":
+      "Dan Patrick was the boss of the trial and later said he didn't like how it started.",
+    "summary-adult":
+      "Republican Lt. Gov. Dan Patrick, who presided over the trial, criticized the impeachment process and suggested changes to the state constitution.",
+  },
+]
 
-const renderResults = (entities) => {
+let entitiesStatic = [
+  {
+    "summary10y":
+      "Angela Paxton, who is married to Ken Paxton, works…people who decided her husband did nothing wrong.",
+    "title": "State Senator",
+    "summaryExpert":
+      "The role of Angela Paxton in the Senate Republican…potential conflicts of interest within the party.",
+    "summary":
+      "Angela Paxton, a state senator and the wife of Ken…the Senate Republicans who acquitted her husband.",
+    "name": "Angela Paxton",
+  },
+]
+
+let summaryLevelMode = 1
+
+const renderResults = async (entities) => {
   let results = document.querySelector(".results")
 
   results.innerHTML = ""
@@ -160,7 +220,7 @@ slider.addEventListener("change", (event) => {
       // Kid
       summaryLevelMode = 0
   }
-  renderResults()
+  renderResults(entities)
 })
 
-renderResults()
+renderResults(entities)
