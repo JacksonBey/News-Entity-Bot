@@ -1,4 +1,4 @@
-#Testing Instructions#
+Testing Instructions
 Open Chrome and navigate to chrome://extensions/.
 Enable Developer Mode.
 Click "Load Unpacked" and select the folder containing the extension files.
