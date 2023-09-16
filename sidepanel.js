@@ -123,20 +123,11 @@ let entities2 = [
 
  let entities = [
   {
-     "name": "AUSTIN, Texas",
-     "kind": "city",
-     "country": "USA",
-     "summary-10y": "It's where the big trial happened for a leader named Ken Paxton.",
-     "summary-adult": "Austin, Texas is where the impeachment trial of Texas Attorney General Ken Paxton took place.",
-     "summary-expert": "Austin serves as the capital of Texas and was the focal point of Attorney General Ken Paxton's impeachment trial, reflecting its central role in state politics and governance."
-  },
-  {
-     "name": "Texas Capitol",
-     "kind": "building",
-     "country": "USA",
-     "summary-10y": "It's a big important building where they decided if Ken Paxton did something wrong.",
-     "summary-adult": "The Texas Capitol is where Ken Paxton's impeachment trial was held.",
-     "summary-expert": "The Texas Capitol, as the venue for the impeachment trial, indicates the significance of the allegations against Paxton and highlights the building's role as the center of state political decision-making."
+    "summary10y": "Angela Paxton, who is married to Ken Paxton, works…people who decided her husband did nothing wrong.",
+    "title": "State Senator",
+    "summaryExpert": "The role of Angela Paxton in the Senate Republican…potential conflicts of interest within the party.",
+    "summary": "Angela Paxton, a state senator and the wife of Ken…the Senate Republicans who acquitted her husband.",
+    "name": "Angela Paxton"
   }
 ]
  
@@ -159,19 +150,19 @@ let entities2 = [
     let summaryEl = document.createElement('summary');
     summaryEl.className = 'summary';
     
-    let summary = entity['summary-10y'];
+    let summary = entity['summary'];
     switch(summaryLevelMode) {
       case 1:
         // Adult
-        summary = entity['summary-adult'];
+        summary = entity['summary'];
         break;
       case 2:
         // Expert
-        summary = entity['summary-expert'];
+        summary = entity['summaryExpert'];
         break;
       default:
         // Kid
-        summary = entity['summary-10y'];
+        summary = entity['summary10y'];
     }
     summaryEl.innerHTML = summary;
     
