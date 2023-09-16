@@ -9,12 +9,17 @@ const dummyApiCall = () => {
 
 document.getElementById('summarize').addEventListener('click', () => {
   const loading = document.getElementById('loading');
-  loading.style.display = 'block';
-
-  let progress = 0;
   const progressBar = document.getElementById('progressBar');
   const completion = document.getElementById('completion');
 
+  // Initially hide loading and completion elements
+  loading.style.display = 'none';
+  completion.style.display = 'none';
+  
+  // Show loading elements
+  loading.style.display = 'block';
+
+  let progress = 0;
   const interval = setInterval(() => {
     progress += 10;
     progressBar.value = progress;
@@ -23,14 +28,13 @@ document.getElementById('summarize').addEventListener('click', () => {
       clearInterval(interval);
       loading.style.display = 'none';
     }
-  }, 1000);
+  }, 200); // Adjust the interval time if needed
 
   // Make the dummy API call
   dummyApiCall().then(response => {
-    if (progress < 100) {
-      progressBar.value = 100;
-      loading.style.display = 'none';
-    }
+    clearInterval(interval); // Clear the interval
+    progressBar.value = 100;
+    loading.style.display = 'none';
     completion.style.display = 'block';
     completion.innerHTML = response.html;
   });
