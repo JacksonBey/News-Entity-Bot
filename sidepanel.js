@@ -8,7 +8,7 @@ const dummyApiCall = () => {
 }
 
 // real API call
-const fetchData = async () => {
+const fetchData = async (text) => {
   const sampleText =
     "AUSTIN, Texas (AP) — Republican Texas Attorney General Ken Paxton was fully acquitted Saturday of corruption charges following a historic impeachment trial, a resounding verdict that reaffirms the power of the GOP’s hard right and puts an indicted incumbent who remains under FBI investigation back into office.The outcome demonstrated Paxton’s enduring durability in America’s biggest red state after years of criminal charges and scandal. It also delivered a signature victory for the Texas GOP’s ascendent conservative wing following a dramatic trial that put on display the fractures among Republicans nationally heading into 2024.More than three months after an overwhelming impeachment in the Texas House, which is controlled by Republicans, Paxton was just as convincingly acquitted by Senate Republicans who serve alongside his wife, state Sen. Angela Paxton."
 
@@ -27,6 +27,8 @@ const fetchData = async () => {
     "Content-Type": "application/json",
   }
 
+  console.log("fetching fixie data")
+
   try {
     const response = await fetch(apiUrl, {
       method: "POST",
@@ -37,9 +39,13 @@ const fetchData = async () => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`)
     }
+    const text = await response.text()
+    const lastLine = text.split("\n").at(-2)
+    const messages = JSON.parse(lastLine)
+      .turns[1].messages.map((d) => d.args)
+      .filter((d) => d !== undefined)
 
-    const responseData = await response.json()
-    console.log(responseData)
+    return messages
   } catch (error) {
     console.error("Error:", error)
   }
@@ -49,6 +55,8 @@ document.getElementById("summarize").addEventListener("click", () => {
   const loading = document.getElementById("loading")
   const progressBar = document.getElementById("progressBar")
   const completion = document.getElementById("completion")
+
+  console.log("button clicked")
 
   // Initially hide loading and completion elements
   loading.style.display = "none"
@@ -75,5 +83,12 @@ document.getElementById("summarize").addEventListener("click", () => {
     loading.style.display = "none"
     completion.style.display = "block"
     completion.innerHTML = response.html
+
+    for (let entity of response) {
+      console.log(entity)
+      let p = document.createElement("p")
+      document.getElementById("responses").appendChild(p)
+      p.innerHTML = `<strong>${entity.name},</strong>${entity.title}<br/>${entity.summary}`
+    }
   })
 })
