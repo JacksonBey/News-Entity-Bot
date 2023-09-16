@@ -153,4 +153,5 @@ li {
     flex-shrink: 0;
     border-radius: 4px;
     background-color: #ececec;
+    margin-left: 16px;
 }
