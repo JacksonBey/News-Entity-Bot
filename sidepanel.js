@@ -131,7 +131,7 @@ let entities2 = [
   }
 ]
  
- let summaryLevelMode = 0;
+ let summaryLevelMode = 1;
 
  const renderResults = async () => {
   let results = document.querySelector('.results');
