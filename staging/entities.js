@@ -87,7 +87,6 @@ let toggle = document.getElementById('toggle');
 toggle.addEventListener('click', (event) => {
   kidMode = !kidMode;
   renderResults()
-  console.log('toggle');
 });
 
 renderResults()
