@@ -94,7 +94,7 @@ document.getElementById("summarize").addEventListener("click", () => {
 })
 
 // Fake data
-let entities = [
+let entities2 = [
   {
       "name": "Ken Paxton",
       "title": "Republican Texas Attorney General",
@@ -120,8 +120,27 @@ let entities = [
       "summary-adult": "Republican Lt. Gov. Dan Patrick, who presided over the trial, criticized the impeachment process and suggested changes to the state constitution."
   },
  ]
+
+ let entities = [
+  {
+     "name": "AUSTIN, Texas",
+     "kind": "city",
+     "country": "USA",
+     "summary-10y": "It's where the big trial happened for a leader named Ken Paxton.",
+     "summary-adult": "Austin, Texas is where the impeachment trial of Texas Attorney General Ken Paxton took place.",
+     "summary-expert": "Austin serves as the capital of Texas and was the focal point of Attorney General Ken Paxton's impeachment trial, reflecting its central role in state politics and governance."
+  },
+  {
+     "name": "Texas Capitol",
+     "kind": "building",
+     "country": "USA",
+     "summary-10y": "It's a big important building where they decided if Ken Paxton did something wrong.",
+     "summary-adult": "The Texas Capitol is where Ken Paxton's impeachment trial was held.",
+     "summary-expert": "The Texas Capitol, as the venue for the impeachment trial, indicates the significance of the allegations against Paxton and highlights the building's role as the center of state political decision-making."
+  }
+]
  
- let kidMode = false;
+ let summaryLevelMode = 0;
 
  const renderResults = async () => {
   let results = document.querySelector('.results');
@@ -140,10 +159,21 @@ let entities = [
     let summaryEl = document.createElement('summary');
     summaryEl.className = 'summary';
     
-    summaryEl.innerHTML = entity['summary-10y'];
-    if (!kidMode) {
-      summaryEl.innerHTML = entity['summary-adult'];
+    let summary = entity['summary-10y'];
+    switch(summaryLevelMode) {
+      case 1:
+        // Adult
+        summary = entity['summary-adult'];
+        break;
+      case 2:
+        // Expert
+        summary = entity['summary-expert'];
+        break;
+      default:
+        // Kid
+        summary = entity['summary-10y'];
     }
+    summaryEl.innerHTML = summary;
     
     let textContent = document.createElement('summary');
     textContent.className = 'text-content';
@@ -163,9 +193,22 @@ let entities = [
   });
  }
 
-let toggle = document.getElementById('toggle');
-toggle.addEventListener('click', (event) => {
-  kidMode = !kidMode;
+let slider = document.getElementById('slider');
+slider.addEventListener('change', (event) => {
+  let sliderVal = slider.value * 1;
+  switch(sliderVal) {
+    case 1:
+      // Adult
+      summaryLevelMode = 1;
+      break;
+    case 2:
+      // Expert
+      summaryLevelMode = 2;
+      break;
+    default:
+      // Kid
+      summaryLevelMode = 0;
+  }
   renderResults()
 });
 
