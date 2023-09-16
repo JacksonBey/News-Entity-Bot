@@ -1,3 +1,5 @@
+let entities = [];
+
 // Function to simulate API call
 const dummyApiCall = () => {
   return new Promise((resolve, reject) => {
@@ -40,6 +42,7 @@ const fetchData = async (text) => {
       throw new Error(`HTTP error! Status: ${response.status}`)
     }
     const text = await response.text()
+    
     const lastLine = text.split("\n").at(-2)
     const messages = JSON.parse(lastLine)
       .turns[1].messages.map((d) => d.args)
@@ -80,21 +83,28 @@ document.getElementById("summarize").addEventListener("click", () => {
   fetchData().then((response) => {
     clearInterval(interval) // Clear the interval
     progressBar.value = 100
-    loading.style.display = "none"
-    completion.style.display = "block"
-    completion.innerHTML = response.html
+    // loading.style.display = "none"
+    // completion.style.display = "block"
+    // completion.innerHTML = response.html
 
-    for (let entity of response) {
-      console.log(entity)
-      let p = document.createElement("p")
-      document.getElementById("responses").appendChild(p)
-      p.innerHTML = `<strong>${entity.name},</strong>${entity.title}<br/>${entity.summary}`
-    }
+    console.log(response);
+
+    entities = response;
+
+
+    renderResults(response);
+
+    // for (let entity of response) {
+    //   console.log(entity)
+    //   let p = document.createElement("p")
+    //   document.getElementById("responses").appendChild(p)
+    //   p.innerHTML = `<strong>${entity.name},</strong>${entity.title}<br/>${entity.summary}`
+    // }
   })
 })
 
 // Fake data
-let entities2 = [
+let entitiesStatic2 = [
   {
       "name": "Ken Paxton",
       "title": "Republican Texas Attorney General",
@@ -121,7 +131,7 @@ let entities2 = [
   },
  ]
 
- let entities = [
+ let entitiesStatic = [
   {
     "summary10y": "Angela Paxton, who is married to Ken Paxton, works…people who decided her husband did nothing wrong.",
     "title": "State Senator",
@@ -130,10 +140,12 @@ let entities2 = [
     "name": "Angela Paxton"
   }
 ]
+
+
  
  let summaryLevelMode = 1;
 
- const renderResults = async () => {
+ const renderResults = async (entities) => {
   let results = document.querySelector('.results');
 
   results.innerHTML = '';
@@ -165,7 +177,7 @@ let entities2 = [
         summary = entity['summary10y'];
     }
     summaryEl.innerHTML = summary;
-    
+  
     let textContent = document.createElement('summary');
     textContent.className = 'text-content';
     textContent.append(nameEl)
@@ -200,7 +212,7 @@ slider.addEventListener('change', (event) => {
       // Kid
       summaryLevelMode = 0;
   }
-  renderResults()
+  renderResults(entities)
 });
 
-renderResults()
+renderResults(entities)
