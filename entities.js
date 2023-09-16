@@ -1,3 +1,20 @@
+let entities2 = [
+  {
+     "name": "Austin, Texas",
+     "kind": "city",
+     "country": "USA",
+     "summary-10y": "Austin is where the trial of a big Texas leader happened.",
+     "summary-adult": "Austin, Texas is the city where Republican Texas Attorney General Ken Paxton faced his impeachment trial."
+  },
+  {
+     "name": "Texas Capitol",
+     "kind": "building",
+     "country": "USA",
+     "summary-10y": "It's a big building where they decided if someone did something wrong.",
+     "summary-adult": "The Texas Capitol is the venue where the impeachment trial for Texas Attorney General Ken Paxton took place."
+  }
+]
+
 let entities = [
   {
       "name": "Ken Paxton",
@@ -27,7 +44,6 @@ let entities = [
 
 let kidMode = false;
 let content = document.querySelector('.content');
-
 
 function renderResults() {
   content.innerHTML = '';
