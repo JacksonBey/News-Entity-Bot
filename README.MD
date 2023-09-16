@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-Testing Instructions
-
-=======
->>>>>>> 6706c51 (extension moved to sidebar)
+#Testing Instructions#
 Open Chrome and navigate to chrome://extensions/.
 
 Enable Developer Mode.
