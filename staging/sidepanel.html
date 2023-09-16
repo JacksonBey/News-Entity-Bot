@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Modern Sidepanel</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Settings</h1>
+      <div class="slider-container">
+        <label for="slider">Adjust Level:</label>
+        <input type="range" id="slider" min="0" max="50" class="slider" />
+      </div>
+      <button class="action-button" id="summarize">Summarize</button>
+      <div class="status" id="loading">
+        <div class="spinner" id="spinner"></div>
+        <progress class="progress-bar" id="progressBar" max="100"></progress>
+      </div>
+      <div class="status" id="completion">
+        Task completed!
+      </div>
+    </div>
+    <script src="sidepanel.js"></script>
+  </body>
+</html>

@@ -1,5 +1,4 @@
-Testing Instructions
-
+#Testing Instructions#
 Open Chrome and navigate to chrome://extensions/.
 
 Enable Developer Mode.

@@ -69,11 +69,3 @@ h1 {
 .progress-bar {
   width: 100%;
 }
-
-#loading{
-  display: none;
-}
-
-#completion{
-  display: none;
-}
