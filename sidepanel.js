@@ -1,3 +1,5 @@
+let summaryLevelMode = 1
+
 document.addEventListener("DOMContentLoaded", main)
 
 function main() {
@@ -27,8 +29,6 @@ function main() {
   const fetchData = async (sampleText) => {
     const apiUrl =
       "https://api.fixie.ai/api/v1/agents/csdiehl/fixie-sidekick-template/conversations"
-
-    console.log("text input", sampleText)
 
     const data = {
       message: {
@@ -69,7 +69,6 @@ function main() {
 
   // render results
   const renderResults = async (entities) => {
-    let summaryLevelMode = 1
     let results = document.querySelector(".results")
 
     results.innerHTML = ""
