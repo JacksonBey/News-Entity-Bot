@@ -4,3 +4,5 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     sendResponse(document.body.innerText)
   }
 })
+
+// document.getElementsByClassName("RichTextStoryBody")[0]
